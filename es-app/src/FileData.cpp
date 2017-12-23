@@ -7,6 +7,7 @@
 #include "FileSorts.h"
 #include "Log.h"
 #include "platform.h"
+#include "Settings.h"
 #include "SystemData.h"
 #include "Util.h"
 #include "VolumeControl.h"
@@ -328,7 +329,9 @@ const std::string& CollectionFileData::getName()
 	if (mDirty) {
 		mCollectionFileName = removeParenthesis(mSourceFileData->metadata.get("name"));
 		boost::trim(mCollectionFileName);
-		mCollectionFileName += " [" + strToUpper(mSourceFileData->getSystem()->getName()) + "]";
+		if (Settings::getInstance()->getBool("AppendSystemName")) {
+		    mCollectionFileName += " [" + strToUpper(mSourceFileData->getSystem()->getName()) + "]";
+		}
 		mDirty = false;
 	}
 	return mCollectionFileName;
