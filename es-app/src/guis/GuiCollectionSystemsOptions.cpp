@@ -74,6 +74,10 @@ void GuiCollectionSystemsOptions::initializeMenu()
 	sortAllSystemsSwitch->setState(Settings::getInstance()->getBool("SortAllSystems"));
 	mMenu.addWithLabel("SORT CUSTOM COLLECTIONS AND SYSTEMS", sortAllSystemsSwitch);
 
+	appendSystemNameSwitch = std::make_shared<SwitchComponent>(mWindow);
+	appendSystemNameSwitch->setState(Settings::getInstance()->getBool("AppendSystemName"));
+	mMenu.addWithLabel("APPEND SYSTEM TO GAME NAME", appendSystemNameSwitch);
+
 	if(CollectionSystemManager::get()->isEditing())
 	{
 		row.elements.clear();
@@ -167,9 +171,12 @@ void GuiCollectionSystemsOptions::applySettings()
 	std::string prevCustom = Settings::getInstance()->getString("CollectionSystemsCustom");
 	bool outSort = sortAllSystemsSwitch->getState();
 	bool prevSort = Settings::getInstance()->getBool("SortAllSystems");
+	bool outAppendSystem = appendSystemNameSwitch->getState();
+	bool prevAppendSystem = Settings::getInstance()->getBool("AppendSystemName");
 	bool outBundle = bundleCustomCollections->getState();
 	bool prevBundle = Settings::getInstance()->getBool("UseCustomCollectionsSystem");
-	bool needUpdateSettings = prevAuto != outAuto || prevCustom != outCustom || outSort != prevSort || outBundle != prevBundle;
+	bool needUpdateSettings = prevAuto != outAuto || prevCustom != outCustom || outSort != prevSort || outBundle != prevBundle
+		|| outAppendSystem != prevAppendSystem;
 	if (needUpdateSettings)
 	{
 		updateSettings(outAuto, outCustom);
@@ -182,6 +189,7 @@ void GuiCollectionSystemsOptions::updateSettings(std::string newAutoSettings, st
 	Settings::getInstance()->setString("CollectionSystemsAuto", newAutoSettings);
 	Settings::getInstance()->setString("CollectionSystemsCustom", newCustomSettings);
 	Settings::getInstance()->setBool("SortAllSystems", sortAllSystemsSwitch->getState());
+	Settings::getInstance()->setBool("AppendSystemName", appendSystemNameSwitch->getState());
 	Settings::getInstance()->setBool("UseCustomCollectionsSystem", bundleCustomCollections->getState());
 	Settings::getInstance()->saveFile();
 	CollectionSystemManager::get()->loadEnabledListFromSettings();

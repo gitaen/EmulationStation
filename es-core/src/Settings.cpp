@@ -114,6 +114,7 @@ void Settings::setDefaults()
 	mStringMap["CollectionSystemsCustom"] = "";
 	mBoolMap["SortAllSystems"] = false;
 	mBoolMap["UseCustomCollectionsSystem"] = true;
+	mBoolMap["AppendSystemName"] = true;
 
 	// Audio out device for volume control
 	#ifdef _RPI_
